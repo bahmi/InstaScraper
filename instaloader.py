@@ -18,12 +18,18 @@ class App:
         self.main_url = 'https://instagram.com'
         self.driver.get((self.main_url)) # opens the url
         sleep(2)
-        self.log_in() # logs into instagram
-
+        self.log_in()
         sleep(2)
+        self.close_dialog_box()
+        sleep(2)
+        self.open_target_profile()
+        sleep(3)
         self.driver.close()
 
     def log_in(self):
+        """
+        logs into instagram by typing the credentials into the input form
+        """
         login_button = self.driver.find_element_by_xpath("//span[@id='react-root']//p[@class='izU2O']/a")
         sleep(1)
         login_button.click()
@@ -37,6 +43,31 @@ class App:
         password_input.send_keys(self.password)
         sleep(1)
         password_input.submit() # submits the form
+
+    def close_dialog_box(self):
+        """
+        closes the dialog box that pops up after log in
+        """
+        try:
+            sleep(1)
+            close_dialog = self.driver.find_element_by_xpath("//div[@class='mt3GC']/button[@class='aOOlW   HoLwm ']")
+            sleep(1)
+            close_dialog.click()
+            sleep(1)
+        except:
+            pass
+
+    def open_target_profile(self):
+        """
+        types the target username into the search bar and
+        opens the profile
+        """
+        search_bar = self.driver.find_element_by_xpath("//input[@placeholder='Search']")
+        sleep(2)
+        search_bar.send_keys(self.target_username)
+        target_profile_url = self.main_url + '/' + self.target_username + '/'
+        sleep(1)
+        self.driver.get(target_profile_url)
 
 if __name__ == '__main__':
     app = App() # creates an App instance
