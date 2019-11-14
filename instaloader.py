@@ -24,6 +24,9 @@ class App:
         sleep(2)
         self.open_target_profile()
         sleep(3)
+        self.scroll_down()
+        sleep(2)
+
         self.driver.close()
 
     def log_in(self):
@@ -68,6 +71,22 @@ class App:
         target_profile_url = self.main_url + '/' + self.target_username + '/'
         sleep(1)
         self.driver.get(target_profile_url)
+
+    def scroll_down(self):
+        """
+        scrolls down in the target profile to load all the images available
+        """
+        sleep(1)
+        no_of_posts = self.driver.find_element_by_xpath("//span[@class='g47SY ']") # finds the number of posts
+        no_of_posts = str(no_of_posts.text).replace(',', '')
+        self.no_of_posts = int(no_of_posts)
+        if self.no_of_posts > 12:
+            no_of_scrolls = int(self.no_of_posts/12) + 2 # calculate the number of times to scroll
+
+            for value in range(no_of_scrolls):
+                self.driver.execute_script('window.scrollTo(0, document.body.scrollHeight);') # scrolls down
+                sleep(2)
+
 
 if __name__ == '__main__':
     app = App() # creates an App instance
