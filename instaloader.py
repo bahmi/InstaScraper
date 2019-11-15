@@ -1,5 +1,6 @@
 from selenium import webdriver
 from time import sleep
+from random import randint
 import json
 
 # load environment variables
@@ -15,17 +16,20 @@ class App:
         self.target_username = target_username
         self.path = path
         self.driver = webdriver.Chrome() # creates an instance of Chrome
+        self.error = False
         self.main_url = 'https://instagram.com'
         self.driver.get((self.main_url)) # opens the url
-        sleep(2)
+        sleep(randint(1,3))
         self.log_in()
-        sleep(2)
-        self.close_dialog_box()
-        sleep(2)
-        self.open_target_profile()
-        sleep(3)
-        self.scroll_down()
-        sleep(2)
+        sleep(randint(1, 3))
+        if self.error is False:
+            self.close_dialog_box()
+            sleep(randint(1, 3))
+            self.open_target_profile()
+            sleep(randint(1, 3))
+        if self.error is False: # to prevent from scrolling the news feed
+            self.scroll_down()
+            sleep(randint(1, 3))
 
         self.driver.close()
 
@@ -33,30 +37,42 @@ class App:
         """
         logs into instagram by typing the credentials into the input form
         """
-        login_button = self.driver.find_element_by_xpath("//span[@id='react-root']//p[@class='izU2O']/a")
-        sleep(1)
-        login_button.click()
-        sleep(2)
-        username_input = self.driver.find_element_by_xpath("//input[@name='username']")
-        sleep(1)
-        username_input.send_keys(self.username) # inputs data into the form
-        sleep(1)
-        password_input = self.driver.find_element_by_xpath("//input[@name='password']")
-        sleep(2)
-        password_input.send_keys(self.password)
-        sleep(1)
-        password_input.submit() # submits the form
+        try:
+            login_button = self.driver.find_element_by_xpath("//span[@id='react-root']//p[@class='izU2O']/a")
+            sleep(randint(1, 3))
+            login_button.click()
+            sleep(randint(1, 3))
+            try:
+                username_input = self.driver.find_element_by_xpath("//input[@name='username']")
+                sleep(randint(1, 3))
+                username_input.send_keys(self.username) # inputs data into the form
+                sleep(randint(1, 3))
+            except Exception:
+                self.error = True
+                print('Couldn\'t find the username input field')
+            try:
+                password_input = self.driver.find_element_by_xpath("//input[@name='password']")
+                sleep(randint(1, 3))
+                password_input.send_keys(self.password)
+                sleep(randint(1, 3))
+                password_input.submit() # submits the form
+            except Exception:
+                self.error = True
+                print('Couldn\'t find the password input field')
+        except Exception:
+            self.error = True
+            print('Unable to locate the login button')
 
     def close_dialog_box(self):
         """
         closes the dialog box that pops up after log in
         """
         try:
-            sleep(1)
+            sleep(randint(1, 2))
             close_dialog = self.driver.find_element_by_xpath("//div[@class='mt3GC']/button[@class='aOOlW   HoLwm ']")
-            sleep(1)
+            sleep(randint(1, 2))
             close_dialog.click()
-            sleep(1)
+            sleep(randint(1, 2))
         except:
             pass
 
@@ -65,27 +81,37 @@ class App:
         types the target username into the search bar and
         opens the profile
         """
-        search_bar = self.driver.find_element_by_xpath("//input[@placeholder='Search']")
-        sleep(2)
-        search_bar.send_keys(self.target_username)
-        target_profile_url = self.main_url + '/' + self.target_username + '/'
-        sleep(1)
-        self.driver.get(target_profile_url)
+        try:
+            search_bar = self.driver.find_element_by_xpath("//input[@placeholder='Search']")
+            sleep(randint(1, 3))
+            search_bar.send_keys(self.target_username)
+            target_profile_url = self.main_url + '/' + self.target_username + '/'
+            sleep(randint(1, 3))
+            self.driver.get(target_profile_url)
+        except Exception:
+            self.error = True
+            print('Couldn\'t find the search bar')
 
     def scroll_down(self):
         """
         scrolls down in the target profile to load all the images available
         """
-        sleep(1)
-        no_of_posts = self.driver.find_element_by_xpath("//span[@class='g47SY ']") # finds the number of posts
-        no_of_posts = str(no_of_posts.text).replace(',', '')
-        self.no_of_posts = int(no_of_posts)
-        if self.no_of_posts > 12:
-            no_of_scrolls = int(self.no_of_posts/12) + 2 # calculate the number of times to scroll
-
-            for value in range(no_of_scrolls):
-                self.driver.execute_script('window.scrollTo(0, document.body.scrollHeight);') # scrolls down
-                sleep(2)
+        try:
+            no_of_posts = self.driver.find_element_by_xpath("//span[@class='g47SY ']") # finds the number of posts
+            no_of_posts = str(no_of_posts.text).replace(',', '')
+            self.no_of_posts = int(no_of_posts)
+            if self.no_of_posts > 12:
+                no_of_scrolls = int(self.no_of_posts/12) + 2 # calculate the number of times to scroll
+                try:
+                    for value in range(no_of_scrolls):
+                        self.driver.execute_script('window.scrollTo(0, document.body.scrollHeight);') # scrolls down
+                        sleep(randint(2, 3))
+                except Exception:
+                    self.error = True
+                    print('Error occured while scrolling down')
+        except Exception:
+            self.error = True
+            print('Couldn\'t find number of posts while scrolling')
 
 
 if __name__ == '__main__':
