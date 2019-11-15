@@ -1,7 +1,11 @@
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from time import sleep
 from random import randint
 import json
+import os
+import requests
+import shutil
 
 # load environment variables
 with open('config.json','r') as f:
@@ -30,6 +34,10 @@ class App:
         if self.error is False: # to prevent from scrolling the news feed
             self.scroll_down()
             sleep(randint(1, 3))
+        if self.error is False:
+            if not os.path.exists(path): # create a directory if it doesn't exist
+                os.mkdir(path)
+            self.download_photos()
 
         self.driver.close()
 
@@ -109,9 +117,30 @@ class App:
                 except Exception:
                     self.error = True
                     print('Error occured while scrolling down')
+            sleep(randint(2, 3))
         except Exception:
             self.error = True
             print('Couldn\'t find number of posts while scrolling')
+
+    def download_photos(self):
+        """
+        download images from the target profile
+        """
+        soup = BeautifulSoup(self.driver.page_source, 'lxml')
+        all_images = soup.find_all('img')
+        print('number of photos: ', len(all_images))
+        for index, image in enumerate(all_images):
+            file_name = 'image_' + str(index) + '.jpg'
+            image_path = os.path.join(self.path, file_name) # create image path
+            link = image['src']
+            print('Downloading image #' + str(index))
+            try:
+                response = requests.get(link, stream=True)  # get the image
+                with open(image_path, 'wb') as file:
+                    shutil.copyfileobj(response.raw, file) # save image to storage device
+            except requests.exceptions.MissingSchema:
+                print('Couldn\'t download image #' + str(index))
+                print('image link: ' + str(link))
 
 
 if __name__ == '__main__':
