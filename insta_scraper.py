@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
+
 from time import sleep
 from random import randint
 import json
@@ -28,7 +29,7 @@ class App:
         sleep(randint(1, 3))
         if self.error is False:
             self.close_dialog_box()
-            sleep(randint(1, 3))
+            sleep(randint(1, 2))
             self.open_target_profile()
             sleep(randint(1, 3))
         if self.error is False: # to prevent from scrolling the news feed
@@ -113,11 +114,11 @@ class App:
                 try:
                     for value in range(no_of_scrolls):
                         self.driver.execute_script('window.scrollTo(0, document.body.scrollHeight);') # scrolls down
-                        sleep(randint(2, 3))
+                        sleep(randint(3, 4))
                 except Exception:
                     self.error = True
                     print('Error occured while scrolling down')
-            sleep(randint(2, 3))
+            sleep(randint(3, 4))
         except Exception:
             self.error = True
             print('Couldn\'t find number of posts while scrolling')
@@ -129,6 +130,7 @@ class App:
         soup = BeautifulSoup(self.driver.page_source, 'lxml')
         all_images = soup.find_all('img')
         print('number of photos: ', len(all_images))
+
         for index, image in enumerate(all_images):
             file_name = 'image_' + str(index) + '.jpg'
             image_path = os.path.join(self.path, file_name) # create image path
