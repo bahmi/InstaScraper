@@ -1,5 +1,5 @@
 # InstaScraper
-A python scraper that lets users download given instagram profile's photos. 
+A python scraper that lets user download given instagram profile's photos. 
 
 ## Prerequisities
 You need to have [Python (3.7+)](https://www.python.org/downloads/) and [ChromeDriver](https://chromedriver.chromium.org/) 
@@ -8,7 +8,7 @@ installed to run this project
 ## Setup
 - clone this repository
 ```
-git clone https://github.com/bahmi/instaloader.git
+git clone https://github.com/bahmi/InstaScraper.git
 ```
 -  After cloning the repo, go to its root directory and run the following command to install required packages
 ```
