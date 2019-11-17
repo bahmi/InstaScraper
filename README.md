@@ -1,5 +1,5 @@
 # InstaScraper
-A python scraper that lets user download given instagram profile's photos. 
+A python scraper which uses BeautifulSoup and Selenium to download public instagram account's photos
 
 ## Prerequisities
 You need to have [Python (3.7+)](https://www.python.org/downloads/) and [ChromeDriver](https://chromedriver.chromium.org/) 
@@ -69,3 +69,8 @@ Oh, and I taught myself xPath as well. It seems to be much faster than other alt
 - Extract profile info such as number of followers and following
 - Capture the captions and AI generated photo descriptions
 - Make it compatible with downloading all the images and videos for any profile and hash tags
+
+## Disclaimer
+This project was done for educational purpose. It is in no way authorized, maintained or sponsored by Instagram. Use 
+InstaScrape responsibly, do not use it for spamming or illegal activities.  
+I'm not responsible for any kind of negative actions that may result from the use of InstaScrape. Use at your own risk.
