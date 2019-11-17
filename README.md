@@ -32,12 +32,13 @@ python insta_scraper.py
 ```
 
 ## How It Works
-When we run the scraper, it creates an instance of Chrome. After that, it opens the url of instagram. Then it locates 
-the login button and clicks on it to go to the next page. It inputs the given username and password then submits the form.
-Sometimes a dialog box pops up after login, it closes that. Then, it input the target username into the search bar. 
-After the username is retrieved, it opens the target profile and gets the number of posts to calculate how many times it 
-has to scroll down as it's a dynamically rendered page. Once all the images has been loaded it grabs the page source and extracts
-the image urls from it. Finally, it gets the images and saves them in the storage device.  
+- When we run the scraper, `webdriver.Chrome()` creates an instance of Chrome. It then opens the url of instagram. 
+- Then `log_in()` locates the login button and clicks on it to go to the next page. It inputs the given username and password then submits the form.
+- Sometimes a dialog box pops up after login, `close_dialog_box()` closes that. Then, `open_target_profile()` inputs the target username into the search bar. 
+- After the username is retrieved, `open_target_profile()` opens the target profile and `scroll_down()` scrolls it down as it's a dynamically rendered page.  
+- Once all the images has been loaded `download_photos()` grabs the page source and extracts the image urls from it. 
+- Then, `download_photos()` downloads the images and saves them in the storage device. 
+- Finally, `driver.close()` closes the chrome instance
 
 ## Challenges Encountered
 Although, I had worked with BeautifulSoup before, I didn't have any experience with Selenium Webdriver prior to this project. 
