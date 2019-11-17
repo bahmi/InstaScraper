@@ -1,12 +1,12 @@
-from bs4 import BeautifulSoup
-from selenium import webdriver
-
 from time import sleep
 from random import randint
 import json
 import os
 import requests
 import shutil
+
+from bs4 import BeautifulSoup
+from selenium import webdriver
 
 # load environment variables
 with open('config.json', 'r') as f:
