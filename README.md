@@ -1,7 +1,7 @@
 # InstaScraper
 A python scraper which uses BeautifulSoup and Selenium to download public instagram account's photos
 
-## Prerequisities
+## Prerequisites
 You need to have [Python (3.7+)](https://www.python.org/downloads/) and [ChromeDriver](https://chromedriver.chromium.org/) 
 installed to run this project
 
